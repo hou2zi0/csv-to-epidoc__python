@@ -1,0 +1,8 @@
+{
+    "csv": ["https://hou2zi0.github.io/csv-to-epidoc/data/files/epidat.csv"],
+    "sep": "|",
+    "map": {
+    "title": "Inventory_Number",
+    "handDesc": "Hands"
+    }
+}
