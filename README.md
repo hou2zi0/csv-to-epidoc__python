@@ -23,35 +23,31 @@ The CLI-tool expects a configuration file with the following content:
 
 Possible keys—representing fields in the XML— are (**may change in the future to be more consistent in regard to the element names in EpiDoc**):
 
-```json
-{
-    'title': 'default',
-    'editor': 'default',
-    'authority': 'default',
-    'filename': 'default',
-    'license': 'default',
-    'settlement': 'default',
-    'repository': 'default',
-    'idno': 'default',
-    'objectType': 'default',
-    'material': 'default',
-    'dimensions': 'default',
-    'handDesc': 'default',
-    'scriptDesc': 'default',
-    'decoDesc': 'default',
-    'originDate': 'default',
-    'originPlace': 'default',
-    'listPerson': 'default',
-    'langUsage': 'default',
-    'facsimile': 'default',
-    'transcription': 'default',
-    'translation': 'default',
-    'description': 'default',
-    'commentary': 'default',
-    'apparatus': 'default',
-    'bibliography': 'default',
-}
-```
+* title
+* editor
+* authority
+* filename
+* license
+* settlement
+* repository
+* idno
+* objectType
+* material
+* dimensions
+* handDesc
+* scriptDesc
+* decoDesc
+* originDate
+* originPlace
+* listPerson
+* langUsage
+* facsimile
+* transcription
+* translation
+* description
+* commentary
+* apparatus
+* bibliography
 
 ## Calling the CLI script
 
