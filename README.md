@@ -52,11 +52,14 @@ Possible keys—representing fields in the XML— are (**may change in the futur
 ## Calling the CLI script
 
 ```bash
-python3 csv-to-epidoc.py -c configfile.json -o output
+Usage: csv-to-epidoc.py [OPTIONS] CONFIGURATIONFILE OUTPUTPATH
+
+Options:
+  --help  Show this message and exit.
 ```
 
-* `-c` specifies the path to the configfile (**required**)
-* `-o` specifies the path to the output folder for the single XML files (**required**)
+* `CONFIGURATIONFILE` specifies the path to the configfile (**required**)
+* `OUTPUTPATH` specifies the path to the output folder for the single XML files (**required**)
 
 The script requires `Python3` and the following libraries:
 
@@ -64,5 +67,5 @@ The script requires `Python3` and the following libraries:
 * pandas
 * json
 * io
-* getopt
-* sys
+* click
+* tdqm

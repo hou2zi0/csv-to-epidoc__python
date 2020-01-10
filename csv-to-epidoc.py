@@ -2,10 +2,7 @@ import requests as rq
 import pandas as pd
 import json
 import io
-import getopt
-import sys
 import click
-import time
 from tqdm import tqdm
 
 @click.command()
