@@ -1,8 +1,32 @@
 {
-    "csv": ["https://hou2zi0.github.io/csv-to-epidoc/data/files/epidat.csv"],
+    "csv":
+        [
+            "https://hou2zi0.github.io/csv-to-epidoc/data/files/epidat.csv"
+        ],
     "sep": "|",
-    "map": {
-    "title": "Inventory_Number",
-    "handDesc": "Hands"
-    }
+    "map":
+        {
+            "title": "Inventory_Number",
+            "filename": "Inventory_Number",
+            "settlement": "Settlement",
+            "repository": "Repository",
+            "idno": "Inventory_Number",
+            "objectType": "Objecttype",
+            "material": "Material",
+            "dimensions": "Dimensions",
+            "handDesc": "Hands",
+            "scriptDesc": "Scripts",
+            "decoDesc": "Symbols",
+            "originDate": "Orig_Date",
+            "originPlace": "Orig_Place",
+            "listPerson": "Names",
+            "langUsage": "Languages",
+            "facsimile": "Images",
+            "transcription": "Transcription",
+            "translation": "Translation",
+            "description": "Description",
+            "commentary": "Commentary",
+            "apparatus": "Notes",
+            "bibliography": "Literature"
+        }
 }

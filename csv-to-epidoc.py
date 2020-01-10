@@ -4,11 +4,19 @@ import json
 import io
 import getopt
 import sys
-import typer
+import click
 import time
 from tqdm import tqdm
 
-def handle(configurationfile: str, outputpath: str):
+@click.command()
+@click.argument('configurationfile',
+                type=click.Path(),
+                required=True)
+@click.argument('outputpath',
+                type=click.Path(),
+                required=True)
+def handle(configurationfile,
+            outputpath):
     with open(configurationfile, 'r') as f:
         jsonfile = f.read()
 
@@ -49,7 +57,7 @@ def handle(configurationfile: str, outputpath: str):
     xml_files = []
 
     for url in config["csv"]:
-        typer.echo(f"Processing {url}")
+        click.echo(f"Processing {url}")
         r = rq.get(url)
         df = pd.read_csv(io.StringIO(r.text), sep=config["sep"])
         df['default'] = 'no mapping'
@@ -72,7 +80,7 @@ def handle(configurationfile: str, outputpath: str):
                                     <authority>{row[_map['authority']]}</authority>
                                     <idno type="filename">{row[_map['filename']]}.xml</idno>
                                     <availability status="free">
-                                        <licence target="">This file is provided under a {row[_map['license']]}. Please follow the URL to obtain further information about the license.</licence>
+                                        <licence>This file is provided under a {row[_map['license']]}.</licence>
                                     </availability>
                                 </publicationStmt>
                                 <sourceDesc>
@@ -89,7 +97,7 @@ def handle(configurationfile: str, outputpath: str):
                                                         <objectType>{row[_map['objectType']]}</objectType>
                                                         <material>{row[_map['material']]}</material>
                                                         <dimensions>
-                                                            {row[_map['dimensions']]}
+                                                            {(lambda lst: newline.join([ f'<dim>{item.strip()}</dim>' for item in lst.split('x')]))(row[_map['dimensions']])}
                                                         </dimensions>
                                                     </support>
                                                 </supportDesc>
@@ -118,50 +126,47 @@ def handle(configurationfile: str, outputpath: str):
                             <profileDesc>
                                 <particDesc>
                                     <listPerson>
-                                        {row[_map['listPerson']]}
+                                        {(lambda lst: newline.join([ f'<person><persName>{item}</persName></person>' for item in lst.split(newline)]))(row[_map['listPerson']])}
                                     </listPerson>
-                                    <listRelation>
-                                        <relation name="" mutual=""/>
-                                    </listRelation>
                                 </particDesc>
                                 <langUsage>
-                                    {row[_map['langUsage']]}
+                                    {(lambda lst: newline.join([ f'<language ident="">{item}</language>' for item in lst.split(newline)]))(row[_map['langUsage']])}
                                 </langUsage>
                             </profileDesc>
                         </teiHeader>
                         <facsimile>
-                        {row[_map['facsimile']]}
+                            {(lambda lst: newline.join([ f'<graphic url="{item}" />' for item in lst.split(newline)]))(row[_map['facsimile']])}
                         </facsimile>
                         <text>
                             <body>
                                 <div type="edition" xml:space="default">
                                     <div type="textpart" subtype="front" n="1" xml:lang="">
                                         <ab>
-                                            {row[_map['transcription']]}
+                                            {(lambda lst: newline.join([ f'<lb/>{item}' for item in lst.split(newline)]))(row[_map['transcription']])}
                                         </ab>
                                     </div>
                                 </div>
                                 <div type="translation">
                                     <div type="textpart" n="1">
                                         <p>
-                                            {row[_map['translation']]}
+                                            {(lambda lst: newline.join([ f'<lb/>{item}' for item in lst.split(newline)]))(row[_map['translation']])}
                                         </p>
                                     </div>
                                 </div>
                                 <div type="commentary" subtype="description">
-                                    {row[_map['description']]}
+                                    {(lambda lst: newline.join([ f'<p>{item}</p>' for item in lst.split(newline)]))(row[_map['description']])}
                                 </div>
                                 <div type="commentary" subtype="commentary">
-                                    {row[_map['commentary']]}
+                                    {(lambda lst: newline.join([ f'<p>{item}</p>' for item in lst.split(newline)]))(row[_map['commentary']])}
                                 </div>
                                 <div type="apparatus" subtype="edition">
-                                    <listApp n="1">
-                                        {row[_map['apparatus']]}
+                                    <listApp>
+                                        {(lambda lst: newline.join([ f'<app><note>{item}</note></app>' for item in lst.split(newline)]))(row[_map['apparatus']])}
                                     </listApp>
                                 </div>
                                 <div type="bibliography">
                                     <listBibl>
-                                        {row[_map['bibliography']]}
+                                        {(lambda lst: newline.join([ f'<bibl>{item}</bibl>' for item in lst.split(newline)]))(row[_map['bibliography']])}
                                     </listBibl>
                                 </div>
                             </body>
@@ -169,13 +174,12 @@ def handle(configurationfile: str, outputpath: str):
                     </TEI>"""
                 xml_files.append(template)
                 pbar.update(1)
-        typer.echo(f'\n')
-
-    #out = json.dumps({ 'xml': xml_files })
+        click.echo(f'\n')
 
     for index, xml in enumerate(xml_files):
         with open(f'./{outputpath}/epidoc_{str(index+1).zfill(4)}.xml', 'w') as f:
             f.write(xml)
+    return xml_files
 
 if __name__ == "__main__":
-    typer.run(handle)
+    handle()
